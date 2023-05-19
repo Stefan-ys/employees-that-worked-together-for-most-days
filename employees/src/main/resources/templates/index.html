@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #csvFile {
+            margin-top: 20px;
+        }
+
+        #resultTable {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #resultTable th,
+        #resultTable td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #resultTable th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>CSV Data Processing</h1>
+
+<input type="file" id="csvFile" accept=".csv" onchange="handleFile(event)">
+<br>
+<table id="resultTable">
+    <thead>
+    <tr>
+        <th class="header">Employee ID #1</th>
+        <th class="header">Employee ID #2</th>
+        <th class="header">Project ID</th>
+        <th class="header">Days worked</th>
+    </tr>
+    </thead>
+    <tbody id="resultBody"></tbody>
+</table>
+
+
+<script>
+    function handleFile(event) {
+        let file = event.target.files[0];
+
+        let formData = new FormData();
+        formData.append("file", file);
+
+        fetch("/process-csv", {
+            method: "POST",
+            body: formData
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                displayResult(result);
+            })
+            .catch(error => console.error(error));
+    }
+
+    function displayResult(result) {
+        let tableBody = document.getElementById("resultBody");
+        tableBody.innerHTML = "";
+
+        result.forEach(row => {
+            let tr = document.createElement("tr");
+            let employee1IdTd = document.createElement("td");
+            employee1IdTd.textContent = row.employee1Id;
+            let employee2IdTd = document.createElement("td");
+            employee2IdTd.textContent = row.employee2Id;
+            let projectIdTd = document.createElement("td");
+            projectIdTd.textContent = row.projectId;
+            let dayWorkedTd = document.createElement("td");
+            dayWorkedTd.textContent = row.daysWorked;
+
+            tr.appendChild(employee1IdTd);
+            tr.appendChild(employee2IdTd);
+            tr.appendChild(projectIdTd);
+            tr.appendChild(dayWorkedTd);
+
+            tableBody.appendChild(tr);
+        });
+    }
+</script>
+</body>
+</html>
