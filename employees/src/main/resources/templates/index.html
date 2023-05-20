@@ -1,43 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Employees</title>
+    <link rel="stylesheet" href="/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        #csvFile {
-            margin-top: 20px;
-        }
-
-        #resultTable {
-            margin-top: 20px;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        #resultTable th,
-        #resultTable td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-        }
-
-        #resultTable th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
-<h1>CSV Data Processing</h1>
+<h1>Pair of employees who have worked together</h1>
 
 <input type="file" id="csvFile" accept=".csv" onchange="handleFile(event)">
 <br>
@@ -80,13 +50,13 @@
         result.forEach(row => {
             let tr = document.createElement("tr");
             let employee1IdTd = document.createElement("td");
-            employee1IdTd.textContent = row.employee1Id;
+            employee1IdTd.textContent = row.employee_id_1;
             let employee2IdTd = document.createElement("td");
-            employee2IdTd.textContent = row.employee2Id;
+            employee2IdTd.textContent = row.employee_id_2;
             let projectIdTd = document.createElement("td");
-            projectIdTd.textContent = row.projectId;
+            projectIdTd.textContent = row.projects;
             let dayWorkedTd = document.createElement("td");
-            dayWorkedTd.textContent = row.daysWorked;
+            dayWorkedTd.textContent = row.days_worked_together;
 
             tr.appendChild(employee1IdTd);
             tr.appendChild(employee2IdTd);

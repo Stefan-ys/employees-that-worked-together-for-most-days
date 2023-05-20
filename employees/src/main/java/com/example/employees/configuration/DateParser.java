@@ -26,6 +26,7 @@ public class DateParser {
             try {
                 return LocalDate.parse(input, formatter);
             } catch (DateTimeParseException e) {
+                 // This is for the loop
             }
         }
         throw new IllegalArgumentException("Invalid date format: " + input);
