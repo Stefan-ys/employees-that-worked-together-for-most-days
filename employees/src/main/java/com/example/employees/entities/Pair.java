@@ -9,7 +9,6 @@ public class Pair {
     @JsonProperty("employee_id_1")
     private int Employee1Id;
 
-
     @JsonProperty("employee_id_2")
     private int Employee2Id;
 
@@ -30,18 +29,8 @@ public class Pair {
         return Employee1Id;
     }
 
-    public Pair setEmployee1Id(int employee1Id) {
-        Employee1Id = employee1Id;
-        return this;
-    }
-
     public int getEmployee2Id() {
         return Employee2Id;
-    }
-
-    public Pair setEmployee2Id(int employee2Id) {
-        Employee2Id = employee2Id;
-        return this;
     }
 
     public int getDaysWorkedTogether() {
@@ -55,11 +44,6 @@ public class Pair {
 
     public Map<Integer, Integer> getProjects() {
         return projects;
-    }
-
-    public Pair setProjects(Map<Integer, Integer> projects) {
-        this.projects = projects;
-        return this;
     }
 
 }

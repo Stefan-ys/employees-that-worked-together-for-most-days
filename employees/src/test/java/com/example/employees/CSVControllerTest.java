@@ -1,7 +1,7 @@
 package com.example.employees;
 
 import com.example.employees.entities.Pair;
-import com.example.employees.service.CSVService;
+import com.example.employees.service.CSVServiceImpl;
 import com.example.employees.web.CSVController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class CSVControllerTest {
 
     @Mock
-    private CSVService csvService;
+    private CSVServiceImpl csvService;
 
     private CSVController csvController;
 
