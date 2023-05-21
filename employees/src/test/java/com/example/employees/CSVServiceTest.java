@@ -43,7 +43,6 @@ public class CSVServiceTest {
 
         Assertions.assertTrue(result.get(0).getProjects().containsKey(12));
         Assertions.assertEquals((int) result.get(0).getProjects().get(12), expectedPair.getProjects().get(12));
-
     }
 
     @Test
@@ -94,7 +93,6 @@ public class CSVServiceTest {
                 Assertions.assertTrue(result.get(i).getProjects().containsKey(projectId));
                 Assertions.assertEquals((int) result.get(i).getProjects().get(projectId), expectedPairs.get(i).getProjects().get(projectId));
             }
-
         }
     }
 }
