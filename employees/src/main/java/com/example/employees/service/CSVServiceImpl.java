@@ -29,7 +29,6 @@ public class CSVServiceImpl implements CSVService {
         Map<Integer, List<Employee>> projects = getProjectFromFile(file);
 
         return getPairThatWorkedTogetherMostDays(projects);
-
     }
 
     private Map<Integer, List<Employee>> getProjectFromFile(MultipartFile file) {
@@ -80,7 +79,6 @@ public class CSVServiceImpl implements CSVService {
         // This nested map holds the data of all the pairs that have worked together,
         // key value in the first map is the first employee id
         // and the key value of the second map is the second employee id.
-
         Map<Integer, Map<Integer, Pair>> employeesPairs = new HashMap<>();
 
         // This iteration do the combinations of pairs in a project and collect them to employeesPairs map.
@@ -113,7 +111,6 @@ public class CSVServiceImpl implements CSVService {
                     }
                 }
             }
-
         }
         return result;
     }
@@ -125,7 +122,6 @@ public class CSVServiceImpl implements CSVService {
         pair.getProjects().putIfAbsent(projectId, 0);
         pair.getProjects().put(projectId, pair.getProjects().get(projectId) + days);
         return checkDays(pair.getDaysWorkedTogether(), mostDays, result, pair);
-
     }
 
     private int initializePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
@@ -136,9 +132,7 @@ public class CSVServiceImpl implements CSVService {
         newPairMap.put(employeeTwo.getId(), newPair);
         employeesPairs.put(employeeOne.getId(), newPairMap);
         return checkDays(days, mostDays, result, newPair);
-
     }
-
 
     private int checkDays(int days, int mostDays, List<Pair> pairs, Pair pair) {
         if (days < mostDays) {
