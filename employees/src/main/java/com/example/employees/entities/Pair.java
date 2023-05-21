@@ -18,6 +18,7 @@ public class Pair {
     @JsonProperty("projects")
     private Map<Integer, Integer> projects;
 
+    
     public Pair(int employee1ID, int employee2ID, int daysWorkedTogether) {
         Employee1Id = employee1ID;
         Employee2Id = employee2ID;
