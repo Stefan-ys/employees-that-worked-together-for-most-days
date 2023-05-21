@@ -10,14 +10,32 @@ import java.util.List;
 
 @Component
 public class DateParser {
-    private static final List<String> DATE_FORMATS = Arrays.asList(
+    private static final String[] DATE_FORMATS = {
             "yyyy-MM-dd",
             "MM/dd/yyyy",
             "dd/MM/yyyy",
             "MMM dd, yyyy",
             "EEEE, MMMM dd, yyyy",
-            "MMMM dd, yyyy"
-    );
+            "MMMM dd, yyyy",
+            "dd-MMM-yyyy",
+            "yyyy/MM/dd",
+            "dd-MM-yyyy",
+            "MMM dd yyyy",
+            "dd/MMM/yyyy",
+            "yyyy-MMM-dd",
+            "MM/dd/yyyy HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss",
+            "dd/MM/yyyy HH:mm:ss",
+            "MMM dd, yyyy HH:mm:ss",
+            "EEEE, MMMM dd, yyyy HH:mm:ss",
+            "MMMM dd, yyyy HH:mm:ss",
+            "dd-MMM-yyyy HH:mm:ss",
+            "yyyy/MM/dd HH:mm:ss",
+            "dd-MM-yyyy HH:mm:ss",
+            "MMM dd yyyy HH:mm:ss",
+            "dd/MMM/yyyy HH:mm:ss",
+            "yyyy-MMM-dd HH:mm:ss"
+    };
 
     public LocalDate parseDate(String input) {
         DateTimeFormatter formatter;
@@ -27,7 +45,7 @@ public class DateParser {
             try {
                 return LocalDate.parse(input, formatter);
             } catch (DateTimeParseException e) {
-                 // This is for the loop
+                 // Try next format
             }
         }
         throw new IllegalArgumentException("Invalid date format: " + input);
