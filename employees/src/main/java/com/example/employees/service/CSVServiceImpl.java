@@ -33,6 +33,7 @@ public class CSVServiceImpl implements CSVService {
     }
 
     private Map<Integer, List<Employee>> getProjectFromFile(MultipartFile file) {
+        // This map hold the list of employees by project, key value is the project id.
         Map<Integer, List<Employee>> projects = new HashMap<>();
 
         try {
@@ -42,7 +43,7 @@ public class CSVServiceImpl implements CSVService {
 
                 String[] arr = line.split(",[\\s+]?");
 
-                if (arr.length < 4) {
+                if (arr.length < 3) {
                     throw new IllegalArgumentException("Missing data from the input");
                 }
 
@@ -51,7 +52,7 @@ public class CSVServiceImpl implements CSVService {
                 LocalDate dateStart = dateParser.parseDate(arr[2].trim());
                 LocalDate dateEnd;
 
-                if (arr[3].equalsIgnoreCase("NULL")) {
+                if (arr.length == 3 || arr[3].equalsIgnoreCase("NULL")) {
                     dateEnd = LocalDate.now();
                 } else {
                     dateEnd = dateParser.parseDate(arr[3]);
@@ -76,7 +77,10 @@ public class CSVServiceImpl implements CSVService {
         List<Pair> result = new ArrayList<>();
         int mostDays = 0;
 
-        // This map holds the data of all the pairs that have worked together.
+        // This nested map holds the data of all the pairs that have worked together,
+        // key value in the first map is the first employee id
+        // and the key value of the second map is the second employee id.
+
         Map<Integer, Map<Integer, Pair>> employeesPairs = new HashMap<>();
 
         // This iteration do the combinations of pairs in a project and collect them to employeesPairs map.
