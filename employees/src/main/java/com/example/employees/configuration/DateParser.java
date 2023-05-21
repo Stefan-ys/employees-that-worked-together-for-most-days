@@ -15,7 +15,8 @@ public class DateParser {
             "MM/dd/yyyy",
             "dd/MM/yyyy",
             "MMM dd, yyyy",
-            "EEEE, MMMM dd, yyyy"
+            "EEEE, MMMM dd, yyyy",
+            "MMMM dd, yyyy"
     );
 
     public LocalDate parseDate(String input) {

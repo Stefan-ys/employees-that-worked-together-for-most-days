@@ -2,13 +2,18 @@ body {
     font-family: Arial, sans-serif;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     margin-top: 20px;
 }
 
+
 #csvFile {
     margin-top: 20px;
+}
+
+#resultText {
+    text-align: center;
 }
 
 #resultTable {

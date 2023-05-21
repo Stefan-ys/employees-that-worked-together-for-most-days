@@ -7,10 +7,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>Pair of employees who have worked together</h1>
+<h1><p>Pair of employees who have worked together</p>
+    <p>on common projects for the longest period of time</p></h1>
 
 <input type="file" id="csvFile" accept=".csv" onchange="handleFile(event)">
 <br>
+
+<h2>Result:</h2>
+<div id="resultText">
+</div>
+
+
 <table id="resultTable">
     <thead>
     <tr>
@@ -35,37 +42,85 @@
             method: "POST",
             body: formData
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Invalid input data");
+                }
+            })
             .then(result => {
                 console.log(result);
-                displayResult(result);
+                displayTextResult(result);
+                displayTableResult(result);
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                displayErrorMessage();
+            });
     }
 
-    function displayResult(result) {
+    function displayTextResult(result) {
+        let resultText = document.getElementById("resultText");
+        resultText.innerHTML = "";
+        let tableBody = document.getElementById("resultBody");
+        tableBody.innerHTML = "";
+
+        if (result.length === 0) {
+            let p = document.createElement("p");
+            p.textContent = "No pair of employees have worked together";
+            resultText.appendChild(p);
+        } else {
+            result.forEach(row => {
+                let p = document.createElement("p");
+                p.textContent = row.employee_id_1 + ', ' + row.employee_id_2 + ', ' + row.days_worked_together;
+                resultText.appendChild(p);
+            });
+        }
+    }
+
+    function displayTableResult(result) {
         let tableBody = document.getElementById("resultBody");
         tableBody.innerHTML = "";
 
         result.forEach(row => {
-            let tr = document.createElement("tr");
-            let employee1IdTd = document.createElement("td");
-            employee1IdTd.textContent = row.employee_id_1;
-            let employee2IdTd = document.createElement("td");
-            employee2IdTd.textContent = row.employee_id_2;
-            let projectIdTd = document.createElement("td");
-            projectIdTd.textContent = row.projects;
-            let dayWorkedTd = document.createElement("td");
-            dayWorkedTd.textContent = row.days_worked_together;
+            const projects = row.projects;
+            for (const key in projects) {
+                let tr = document.createElement("tr");
+                let employee1IdTd = document.createElement("td");
+                employee1IdTd.textContent = row.employee_id_1;
+                let employee2IdTd = document.createElement("td");
+                employee2IdTd.textContent = row.employee_id_2;
+                let projectIdTd = document.createElement("td");
+                projectIdTd.textContent = key;
+                let dayWorkedTd = document.createElement("td");
+                dayWorkedTd.textContent = projects[key];
 
-            tr.appendChild(employee1IdTd);
-            tr.appendChild(employee2IdTd);
-            tr.appendChild(projectIdTd);
-            tr.appendChild(dayWorkedTd);
+                tr.appendChild(employee1IdTd);
+                tr.appendChild(employee2IdTd);
+                tr.appendChild(projectIdTd);
+                tr.appendChild(dayWorkedTd);
 
-            tableBody.appendChild(tr);
+                tableBody.appendChild(tr);
+
+
+            }
         });
     }
+
+    function displayErrorMessage() {
+        let resultText = document.getElementById("resultText");
+        resultText.innerHTML = "";
+        let tableBody = document.getElementById("resultBody");
+        tableBody.innerHTML = "";
+
+        let p = document.createElement("p");
+        p.textContent = "Invalid input data";
+        resultText.appendChild(p);
+    }
+
+
+
 </script>
 </body>
 </html>
