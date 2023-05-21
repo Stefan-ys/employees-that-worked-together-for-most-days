@@ -47,8 +47,7 @@ public class DateParser {
             } catch (DateTimeParseException e) {
                  // Try next format
             }
-        }
+        } 
         throw new IllegalArgumentException("Invalid date format: " + input);
-
     }
 }
