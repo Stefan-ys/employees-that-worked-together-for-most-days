@@ -43,6 +43,7 @@ public class CSVServiceTest {
 
         Assertions.assertTrue(result.get(0).getProjects().containsKey(12));
         Assertions.assertEquals((int) result.get(0).getProjects().get(12), expectedPair.getProjects().get(12));
+
     }
 
     @Test
@@ -58,7 +59,7 @@ public class CSVServiceTest {
                 140, 16, 2013-11-01, 2015-02-20
                 146, 16, 2015-02-05, 2015-02-15
                 147, 17, 2013-11-01, 2015-01-31
-                148, 17, 2015-01-01, 2015-01-31
+                148, 17, 01/01/2015, 31/01/2015
                 150, 1, 2013-01-01, null   
                 148, 21, 2015-01-01, 2015-01-31
                 148, 21, 2015-01-01, 2015-01-31                           
@@ -93,6 +94,20 @@ public class CSVServiceTest {
                 Assertions.assertTrue(result.get(i).getProjects().containsKey(projectId));
                 Assertions.assertEquals((int) result.get(i).getProjects().get(projectId), expectedPairs.get(i).getProjects().get(projectId));
             }
+
         }
+    }
+    @Test
+    public void testProcessCSVInvalidData() {
+
+        String csvContent = """
+                143, 12, 2013-11-01, 2014-02-20
+                144, 12,
+                145, 12, 2014-02-05, 2014-02-15""";
+
+        MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> csvService.processCSV(file));
+
     }
 }
