@@ -10,10 +10,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CSVServiceImpl implements CSVService {
@@ -29,6 +26,7 @@ public class CSVServiceImpl implements CSVService {
         Map<Integer, List<Employee>> projects = getProjectFromFile(file);
 
         return getPairThatWorkedTogetherMostDays(projects);
+
     }
 
     private Map<Integer, List<Employee>> getProjectFromFile(MultipartFile file) {
@@ -41,7 +39,7 @@ public class CSVServiceImpl implements CSVService {
             while ((line = reader.readLine()) != null) {
 
                 String[] arr = line.split(",[\\s+]?");
-
+                System.out.println(line);
                 if (arr.length < 3) {
                     throw new IllegalArgumentException("Missing data from the input");
                 }
@@ -70,7 +68,6 @@ public class CSVServiceImpl implements CSVService {
     }
 
     private List<Pair> getPairThatWorkedTogetherMostDays(Map<Integer, List<Employee>> projects) {
-
         // This list holds the result of the pair that worked together for most days,
         // data will be stored in list in case there is more than one pair with the same result.
         List<Pair> result = new ArrayList<>();
@@ -101,9 +98,9 @@ public class CSVServiceImpl implements CSVService {
 
                     if (dateStarted.isBefore(dateEnded)) {
                         int days = (int) ChronoUnit.DAYS.between(dateStarted, dateEnded);
-                        if (employeesPairs.containsKey(employeeOne.getId())) {
+                        if (employeesPairs.containsKey(employeeOne.getId()) && employeesPairs.get(employeeOne.getId()).containsKey(employeeTwo.getId())) {
                             mostDays = unitePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
-                        } else if (employeesPairs.containsKey(employeeTwo.getId())) {
+                        } else if (employeesPairs.containsKey(employeeTwo.getId()) && employeesPairs.get(employeeTwo.getId()).containsKey(employeeTwo.getId())) {
                             mostDays = unitePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
                         } else {
                             mostDays = initializePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
@@ -111,6 +108,7 @@ public class CSVServiceImpl implements CSVService {
                     }
                 }
             }
+
         }
         return result;
     }
@@ -119,9 +117,13 @@ public class CSVServiceImpl implements CSVService {
 
         Pair pair = employeesPairs.get(employeeOne.getId()).get(employeeTwo.getId());
         pair.setDaysWorkedTogether(pair.getDaysWorkedTogether() + days);
+
         pair.getProjects().putIfAbsent(projectId, 0);
         pair.getProjects().put(projectId, pair.getProjects().get(projectId) + days);
+
+
         return checkDays(pair.getDaysWorkedTogether(), mostDays, result, pair);
+
     }
 
     private int initializePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
@@ -132,7 +134,9 @@ public class CSVServiceImpl implements CSVService {
         newPairMap.put(employeeTwo.getId(), newPair);
         employeesPairs.put(employeeOne.getId(), newPairMap);
         return checkDays(days, mostDays, result, newPair);
+
     }
+
 
     private int checkDays(int days, int mostDays, List<Pair> pairs, Pair pair) {
         if (days < mostDays) {
