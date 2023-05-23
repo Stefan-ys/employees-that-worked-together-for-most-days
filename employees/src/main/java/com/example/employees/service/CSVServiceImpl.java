@@ -99,9 +99,9 @@ public class CSVServiceImpl implements CSVService {
                     if (dateStarted.isBefore(dateEnded)) {
                         int days = (int) ChronoUnit.DAYS.between(dateStarted, dateEnded);
                         if (employeesPairs.containsKey(employeeOne.getId()) && employeesPairs.get(employeeOne.getId()).containsKey(employeeTwo.getId())) {
-                            mostDays = unitePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
+                            mostDays = addProjectAndDaysToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
                         } else if (employeesPairs.containsKey(employeeTwo.getId()) && employeesPairs.get(employeeTwo.getId()).containsKey(employeeOne.getId())) {
-                            mostDays = unitePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
+                            mostDays = addProjectAndDaysToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
                         } else {
                             mostDays = initializePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
                         }
@@ -113,7 +113,7 @@ public class CSVServiceImpl implements CSVService {
         return result;
     }
 
-    private int unitePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
+    private int addProjectAndDaysToPairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
 
         Pair pair = employeesPairs.get(employeeOne.getId()).get(employeeTwo.getId());
         pair.setDaysWorkedTogether(pair.getDaysWorkedTogether() + days);
