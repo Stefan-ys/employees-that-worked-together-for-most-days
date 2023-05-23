@@ -39,7 +39,6 @@ public class CSVServiceImpl implements CSVService {
             while ((line = reader.readLine()) != null) {
 
                 String[] arr = line.split(",[\\s+]?");
-                System.out.println(line);
                 if (arr.length < 3) {
                     throw new IllegalArgumentException("Missing data from the input");
                 }
