@@ -100,7 +100,7 @@ public class CSVServiceImpl implements CSVService {
                         int days = (int) ChronoUnit.DAYS.between(dateStarted, dateEnded);
                         if (employeesPairs.containsKey(employeeOne.getId()) && employeesPairs.get(employeeOne.getId()).containsKey(employeeTwo.getId())) {
                             mostDays = unitePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
-                        } else if (employeesPairs.containsKey(employeeTwo.getId()) && employeesPairs.get(employeeTwo.getId()).containsKey(employeeTwo.getId())) {
+                        } else if (employeesPairs.containsKey(employeeTwo.getId()) && employeesPairs.get(employeeTwo.getId()).containsKey(employeeOne.getId())) {
                             mostDays = unitePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
                         } else {
                             mostDays = initializePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
