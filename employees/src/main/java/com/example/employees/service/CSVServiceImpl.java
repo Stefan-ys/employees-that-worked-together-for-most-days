@@ -119,7 +119,6 @@ public class CSVServiceImpl implements CSVService {
 
         Pair pair = employeesPairs.get(employeeOne.getId()).get(employeeTwo.getId());
         pair.setDaysWorkedTogether(pair.getDaysWorkedTogether() + days);
-
         pair.getProjects().putIfAbsent(projectId, 0);
         pair.getProjects().put(projectId, pair.getProjects().get(projectId) + days);
 
