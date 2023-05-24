@@ -37,13 +37,45 @@ public class CSVServiceTest {
         expectedPair.getProjects().put(12, 10);
         Assertions.assertEquals(1, result.size());
 
-        Assertions.assertEquals(result.get(0).getEmployee1Id(), expectedPair.getEmployee1Id());
-        Assertions.assertEquals(result.get(0).getEmployee2Id(), expectedPair.getEmployee2Id());
-        Assertions.assertEquals(result.get(0).getDaysWorkedTogether(), (expectedPair.getDaysWorkedTogether()));
+        Assertions.assertEquals(expectedPair.getEmployee1Id(), result.get(0).getEmployee1Id());
+        Assertions.assertEquals(expectedPair.getEmployee2Id(), result.get(0).getEmployee2Id());
+        Assertions.assertEquals(expectedPair.getDaysWorkedTogether(), result.get(0).getDaysWorkedTogether());
 
         Assertions.assertTrue(result.get(0).getProjects().containsKey(12));
-        Assertions.assertEquals((int) result.get(0).getProjects().get(12), expectedPair.getProjects().get(12));
+        Assertions.assertEquals(expectedPair.getProjects().get(12), (int) result.get(0).getProjects().get(12));
+    }
 
+    @Test
+    public void testProcessCSVWithMultiProjects() {
+        String csvContent = """
+                1,1,2019-7-4,2020-8-14
+                1,2,2019-12-25,2020-12-28
+                1,3,2018-10-12,NULL
+                1,4,2019-11-16,NULL
+                1,5,2020-1-5,2020-12-21
+                2,1,2018-10-3,NULL
+                2,2,2019-1-16,2020-3-24
+                2,3,2019-5-22,2019-12-26
+                2,4,2020-3-7,NULL
+                2,5,2018-1-24,2019-1-15
+                3,1,2019-3-21,2020-11-26
+                3,5,2019-9-28,2020-12-25
+                4,2,2018-10-22,NULL
+                4,3,2018-1-27,2020-8-28
+                5,3,2018-2-3,2020-10-14
+                5,5,2018-8-4,NULL""";
+
+        MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
+        List<Pair> result = csvService.processCSV(file);
+
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(4, result.get(0).getProjects().size());
+        Assertions.assertEquals(1, result.get(0).getEmployee1Id());
+        Assertions.assertEquals(2, result.get(0).getEmployee2Id());
+
+        for (int i = 0; i < result.get(0).getProjects().size(); i++) {
+            Assertions.assertTrue(result.get(0).getProjects().containsKey(i + 1));
+        }
     }
 
     @Test
@@ -60,16 +92,14 @@ public class CSVServiceTest {
                 146, 16, 2015-02-05, 2015-02-15
                 147, 17, 2013-11-01, 2015-01-31
                 148, 17, 01/01/2015, 31/01/2015
-                150, 1, 2013-01-01, null   
+                150, 1, 2013-01-01, null  
                 148, 21, 2015-01-01, 2015-01-31
                 148, 21, 2015-01-01, 2015-01-31                           
                 """;
 
-
         MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
 
         List<Pair> result = csvService.processCSV(file);
-
 
         Pair expectedPair1 = new Pair(147, 148, 30);
         expectedPair1.getProjects().put(17, 30);
@@ -86,18 +116,18 @@ public class CSVServiceTest {
         Assertions.assertEquals(2, result.size());
 
         for (int i = 0; i < result.size(); i++) {
-            Assertions.assertEquals(result.get(i).getEmployee1Id(), expectedPairs.get(i).getEmployee1Id());
-            Assertions.assertEquals(result.get(i).getEmployee2Id(), expectedPairs.get(i).getEmployee2Id());
-            Assertions.assertEquals(result.get(i).getDaysWorkedTogether(), expectedPairs.get(i).getDaysWorkedTogether());
+            Assertions.assertEquals(expectedPairs.get(i).getEmployee1Id(), result.get(i).getEmployee1Id());
+            Assertions.assertEquals(expectedPairs.get(i).getEmployee2Id(), result.get(i).getEmployee2Id());
+            Assertions.assertEquals(expectedPairs.get(i).getDaysWorkedTogether(), result.get(i).getDaysWorkedTogether());
 
             for (Integer projectId : result.get(i).getProjects().keySet()) {
                 Assertions.assertTrue(result.get(i).getProjects().containsKey(projectId));
-                Assertions.assertEquals((int) result.get(i).getProjects().get(projectId), expectedPairs.get(i).getProjects().get(projectId));
+                Assertions.assertEquals(expectedPairs.get(i).getProjects().get(projectId), (int) result.get(i).getProjects().get(projectId));
             }
-
         }
     }
-    
+
+
     @Test
     public void testProcessCSVInvalidData() {
 
@@ -109,6 +139,5 @@ public class CSVServiceTest {
         MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> csvService.processCSV(file));
-
     }
 }

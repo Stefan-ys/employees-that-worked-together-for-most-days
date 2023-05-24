@@ -15,10 +15,10 @@ public class Pair {
     @JsonProperty("days_worked_together")
     private int daysWorkedTogether;
 
+    // Stores projectId and days worked together by project
     @JsonProperty("projects")
     private Map<Integer, Integer> projects;
 
-    
     public Pair(int employee1ID, int employee2ID, int daysWorkedTogether) {
         Employee1Id = employee1ID;
         Employee2Id = employee2ID;
@@ -46,5 +46,4 @@ public class Pair {
     public Map<Integer, Integer> getProjects() {
         return projects;
     }
-
 }

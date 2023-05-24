@@ -22,11 +22,10 @@ public class CSVServiceImpl implements CSVService {
 
     @Override
     public List<Pair> processCSV(MultipartFile file) {
-
+        // Read data from file and add employees by project to map
         Map<Integer, List<Employee>> projects = getProjectFromFile(file);
-
+        // Return pair(s) with that worked together for the most days from the project map
         return getPairThatWorkedTogetherMostDays(projects);
-
     }
 
     private Map<Integer, List<Employee>> getProjectFromFile(MultipartFile file) {
@@ -122,21 +121,16 @@ public class CSVServiceImpl implements CSVService {
         pair.getProjects().put(projectId, pair.getProjects().get(projectId) + days);
 
         return checkDays(pair.getDaysWorkedTogether(), mostDays, result, pair);
-
     }
 
     private int initializePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, int projectId, Employee employeeOne, Employee employeeTwo, int days) {
 
         Pair newPair = new Pair(employeeOne.getId(), employeeTwo.getId(), 0);
-        Map<Integer, Pair> pairMap = new HashMap<>();
-        pairMap.put(employeeTwo.getId(), newPair);
         employeesPairs.putIfAbsent(employeeOne.getId(), new HashMap<>());
         employeesPairs.get(employeeOne.getId()).put(employeeTwo.getId(), newPair);
 
         return addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
-
     }
-
 
     private int checkDays(int days, int mostDays, List<Pair> pairs, Pair pair) {
         if (days < mostDays) {

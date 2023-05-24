@@ -5,17 +5,16 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.List;
+
 
 @Component
 public class DateParser {
     private static final String[] DATE_FORMATS = {
             "yyyy-MM-dd",
             "yyyy-M-d",
-            "MM/dd/yy",
             "MM/dd/yyyy",
             "dd/MM/yyyy",
+            "MM/dd/yy",
             "MMM dd, yyyy",
             "EEEE, MMMM dd, yyyy",
             "MMMM dd, yyyy",
@@ -49,7 +48,7 @@ public class DateParser {
             } catch (DateTimeParseException e) {
                  // Try next format
             }
-        } 
+        }
         throw new IllegalArgumentException("Invalid date format: " + input);
     }
 }

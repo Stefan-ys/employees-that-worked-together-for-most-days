@@ -9,7 +9,6 @@ public class Employee {
 
     private LocalDate dateEnded;
 
-
     public Employee(int id, LocalDate dateStarted, LocalDate dateEnded) {
         this.id = id;
         this.dateStarted = dateStarted;
@@ -27,5 +26,4 @@ public class Employee {
     public LocalDate getDateEnded() {
         return dateEnded;
     }
-
 }
