@@ -100,7 +100,7 @@ public class CSVServiceImpl implements CSVService {
                         int days = (int) ChronoUnit.DAYS.between(dateStarted, dateEnded);
 
                         // Check if the pair already exists in employeePairs, if yes then add project to the pair and if not create a new pair
-                        if (employeesPairs.containsKey(employeeOne.getId()) && employeesPairs.get(employeeOne.getId()).containsKey(employeeTwo.getId())) {
+                        if ((employeesPairs.containsKey(employeeOne.getId()) && employeesPairs.get(employeeOne.getId()).containsKey(employeeTwo.getId()))) {
                             mostDays = addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
                         } else if (employeesPairs.containsKey(employeeTwo.getId()) && employeesPairs.get(employeeTwo.getId()).containsKey(employeeOne.getId())) {
                             mostDays = addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
@@ -110,12 +110,11 @@ public class CSVServiceImpl implements CSVService {
                     }
                 }
             }
-
         }
         return result;
     }
 
-    private int addProjectToPairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
+    private int addProjectToPairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, int projectId, Employee employeeOne, Employee employeeTwo, int days) {
 
         Pair pair = employeesPairs.get(employeeOne.getId()).get(employeeTwo.getId());
         pair.setDaysWorkedTogether(pair.getDaysWorkedTogether() + days);
@@ -126,12 +125,13 @@ public class CSVServiceImpl implements CSVService {
 
     }
 
-    private int initializePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
+    private int initializePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, int projectId, Employee employeeOne, Employee employeeTwo, int days) {
 
         Pair newPair = new Pair(employeeOne.getId(), employeeTwo.getId(), 0);
         Map<Integer, Pair> pairMap = new HashMap<>();
         pairMap.put(employeeTwo.getId(), newPair);
-        employeesPairs.put(employeeOne.getId(), pairMap);
+        employeesPairs.putIfAbsent(employeeOne.getId(), new HashMap<>());
+        employeesPairs.get(employeeOne.getId()).put(employeeTwo.getId(), newPair);
 
         return addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
 
