@@ -39,6 +39,7 @@ public class CSVServiceImpl implements CSVService {
             while ((line = reader.readLine()) != null) {
 
                 String[] arr = line.split(",[\\s+]?");
+                System.out.println(line);
                 if (arr.length < 3) {
                     throw new IllegalArgumentException("Missing data from the input");
                 }
@@ -97,10 +98,12 @@ public class CSVServiceImpl implements CSVService {
 
                     if (dateStarted.isBefore(dateEnded)) {
                         int days = (int) ChronoUnit.DAYS.between(dateStarted, dateEnded);
+
+                        // Check if the pair already exists in employeePairs, if yes then add project to the pair and if not create a new pair
                         if (employeesPairs.containsKey(employeeOne.getId()) && employeesPairs.get(employeeOne.getId()).containsKey(employeeTwo.getId())) {
-                            mostDays = addProjectAndDaysToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
+                            mostDays = addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
                         } else if (employeesPairs.containsKey(employeeTwo.getId()) && employeesPairs.get(employeeTwo.getId()).containsKey(employeeOne.getId())) {
-                            mostDays = addProjectAndDaysToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
+                            mostDays = addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeTwo, employeeOne, days);
                         } else {
                             mostDays = initializePairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
                         }
@@ -112,7 +115,7 @@ public class CSVServiceImpl implements CSVService {
         return result;
     }
 
-    private int addProjectAndDaysToPairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
+    private int addProjectToPairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
 
         Pair pair = employeesPairs.get(employeeOne.getId()).get(employeeTwo.getId());
         pair.setDaysWorkedTogether(pair.getDaysWorkedTogether() + days);
@@ -120,19 +123,18 @@ public class CSVServiceImpl implements CSVService {
         pair.getProjects().putIfAbsent(projectId, 0);
         pair.getProjects().put(projectId, pair.getProjects().get(projectId) + days);
 
-
         return checkDays(pair.getDaysWorkedTogether(), mostDays, result, pair);
 
     }
 
     private int initializePairAndGetMostDays(List<Pair> result, int mostDays, Map<Integer, Map<Integer, Pair>> employeesPairs, Integer projectId, Employee employeeOne, Employee employeeTwo, int days) {
 
-        Pair newPair = new Pair(employeeOne.getId(), employeeTwo.getId(), days);
-        newPair.getProjects().put(projectId, days);
-        Map<Integer, Pair> newPairMap = new HashMap<>();
-        newPairMap.put(employeeTwo.getId(), newPair);
-        employeesPairs.put(employeeOne.getId(), newPairMap);
-        return checkDays(days, mostDays, result, newPair);
+        Pair newPair = new Pair(employeeOne.getId(), employeeTwo.getId(), 0);
+        Map<Integer, Pair> pairMap = new HashMap<>();
+        pairMap.put(employeeTwo.getId(), newPair);
+        employeesPairs.put(employeeOne.getId(), pairMap);
+
+        return addProjectToPairAndGetMostDays(result, mostDays, employeesPairs, projectId, employeeOne, employeeTwo, days);
 
     }
 
