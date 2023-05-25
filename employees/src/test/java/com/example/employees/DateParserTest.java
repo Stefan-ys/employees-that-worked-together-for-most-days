@@ -1,6 +1,6 @@
 package com.example.employees;
 
-import com.example.employees.configuration.DateParser;
+import com.example.employees.components.DateParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

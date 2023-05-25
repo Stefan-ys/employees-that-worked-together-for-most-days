@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class Pair {
     @JsonProperty("employee_id_1")
-    private int Employee1Id;
+    private int EmployeeOneId;
 
     @JsonProperty("employee_id_2")
-    private int Employee2Id;
+    private int EmployeeTwoId;
 
     @JsonProperty("days_worked_together")
     private int daysWorkedTogether;
@@ -19,19 +19,19 @@ public class Pair {
     @JsonProperty("projects")
     private Map<Integer, Integer> projects;
 
-    public Pair(int employee1ID, int employee2ID, int daysWorkedTogether) {
-        Employee1Id = employee1ID;
-        Employee2Id = employee2ID;
-        this.daysWorkedTogether = daysWorkedTogether;
+    public Pair(int employeeOneId, int employeeTwoId, int days) {
+        EmployeeOneId = employeeOneId;
+        EmployeeTwoId = employeeTwoId;
+        this.daysWorkedTogether = days;
         this.projects = new HashMap<>();
     }
 
-    public int getEmployee1Id() {
-        return Employee1Id;
+    public int getEmployeeOneId() {
+        return EmployeeOneId;
     }
 
-    public int getEmployee2Id() {
-        return Employee2Id;
+    public int getEmployeeTwoId() {
+        return EmployeeTwoId;
     }
 
     public int getDaysWorkedTogether() {
@@ -45,5 +45,11 @@ public class Pair {
 
     public Map<Integer, Integer> getProjects() {
         return projects;
+    }
+
+    public void addProjectToPair(int projectId, int days) {
+        this.projects.putIfAbsent(projectId, 0);
+        this.projects.put(projectId, projects.get(projectId) + days);
+        this.daysWorkedTogether += days;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.employees;
 
-import com.example.employees.configuration.DateParser;
+import com.example.employees.components.DateParser;
 import com.example.employees.entities.Pair;
 import com.example.employees.service.CSVService;
 import com.example.employees.service.CSVServiceImpl;
@@ -37,8 +37,8 @@ public class CSVServiceTest {
         expectedPair.getProjects().put(12, 10);
         Assertions.assertEquals(1, result.size());
 
-        Assertions.assertEquals(expectedPair.getEmployee1Id(), result.get(0).getEmployee1Id());
-        Assertions.assertEquals(expectedPair.getEmployee2Id(), result.get(0).getEmployee2Id());
+        Assertions.assertEquals(expectedPair.getEmployeeOneId(), result.get(0).getEmployeeOneId());
+        Assertions.assertEquals(expectedPair.getEmployeeTwoId(), result.get(0).getEmployeeTwoId());
         Assertions.assertEquals(expectedPair.getDaysWorkedTogether(), result.get(0).getDaysWorkedTogether());
 
         Assertions.assertTrue(result.get(0).getProjects().containsKey(12));
@@ -70,8 +70,8 @@ public class CSVServiceTest {
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals(4, result.get(0).getProjects().size());
-        Assertions.assertEquals(1, result.get(0).getEmployee1Id());
-        Assertions.assertEquals(2, result.get(0).getEmployee2Id());
+        Assertions.assertEquals(1, result.get(0).getEmployeeOneId());
+        Assertions.assertEquals(2, result.get(0).getEmployeeTwoId());
 
         for (int i = 0; i < result.get(0).getProjects().size(); i++) {
             Assertions.assertTrue(result.get(0).getProjects().containsKey(i + 1));
@@ -116,8 +116,8 @@ public class CSVServiceTest {
         Assertions.assertEquals(2, result.size());
 
         for (int i = 0; i < result.size(); i++) {
-            Assertions.assertEquals(expectedPairs.get(i).getEmployee1Id(), result.get(i).getEmployee1Id());
-            Assertions.assertEquals(expectedPairs.get(i).getEmployee2Id(), result.get(i).getEmployee2Id());
+            Assertions.assertEquals(expectedPairs.get(i).getEmployeeOneId(), result.get(i).getEmployeeOneId());
+            Assertions.assertEquals(expectedPairs.get(i).getEmployeeTwoId(), result.get(i).getEmployeeTwoId());
             Assertions.assertEquals(expectedPairs.get(i).getDaysWorkedTogether(), result.get(i).getDaysWorkedTogether());
 
             for (Integer projectId : result.get(i).getProjects().keySet()) {
