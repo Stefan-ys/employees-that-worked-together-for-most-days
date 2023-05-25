@@ -26,9 +26,6 @@ public class EmployeesByProjectRepository {
     }
 
     public List<Employee> getEmployeesByProjectId(int projectId) {
-        if (projects.containsKey(projectId)) {
-            return projects.get(projectId);
-        }
-        throw new IllegalArgumentException("No project with id: " + projectId);
+        return projects.get(projectId);
     }
 }

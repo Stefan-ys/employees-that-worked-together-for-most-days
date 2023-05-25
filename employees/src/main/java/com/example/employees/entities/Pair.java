@@ -38,10 +38,6 @@ public class Pair {
         return daysWorkedTogether;
     }
 
-    public Pair setDaysWorkedTogether(int daysWorkedTogether) {
-        this.daysWorkedTogether = daysWorkedTogether;
-        return this;
-    }
 
     public Map<Integer, Integer> getProjects() {
         return projects;

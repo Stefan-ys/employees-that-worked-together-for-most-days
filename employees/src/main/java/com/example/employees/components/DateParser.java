@@ -5,51 +5,51 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 @Component
 public class DateParser {
     private static final String[] DATE_FORMATS = {
             "yyyy-MM-dd",
-            "yyyy-M-d",
-            "MM/dd/yyyy",
-            "dd/MM/yyyy",
-            "MM/dd/yy",
-            "MMM dd, yyyy",
-            "EEEE, MMMM dd, yyyy",
-            "MMMM dd, yyyy",
-            "dd-MMM-yyyy",
-            "yyyy/MM/dd",
             "dd-MM-yyyy",
-            "MMM dd yyyy",
-            "dd/MMM/yyyy",
-            "yyyy-MMM-dd",
-            "MM/dd/yyyy HH:mm:ss",
-            "yyyy-MM-dd HH:mm:ss",
-            "dd/MM/yyyy HH:mm:ss",
-            "MMM dd, yyyy HH:mm:ss",
-            "EEEE, MMMM dd, yyyy HH:mm:ss",
-            "MMMM dd, yyyy HH:mm:ss",
-            "dd-MMM-yyyy HH:mm:ss",
-            "yyyy/MM/dd HH:mm:ss",
-            "dd-MM-yyyy HH:mm:ss",
-            "MMM dd yyyy HH:mm:ss",
-            "dd/MMM/yyyy HH:mm:ss",
-            "yyyy-MMM-dd HH:mm:ss"
+            "MM-dd-yyyy",
+            "yyyy-M-d",
+            "MM-dd-yy",
+            "dd-MM-yy",
+            "MMM-dd-yyyy",
+            "MMMM-dd-yyyy",
+            "dd-MMM-yyyy",
     };
 
     public LocalDate parseDate(String input) {
+
+        input = prepareInput(input);
+
         DateTimeFormatter formatter;
+
         for (String format : DATE_FORMATS) {
             formatter = DateTimeFormatter.ofPattern(format);
 
             try {
                 return LocalDate.parse(input, formatter);
             } catch (DateTimeParseException e) {
-                 // Try next format
+                // Try next format
             }
         }
         throw new IllegalArgumentException("Invalid date format: " + input);
 
+    }
+
+    private String prepareInput(String input) {
+        String regexTime = "\\d{2}:\\d{2}(:\\d{2})?";
+        String regexDayOfTheWeek = "\\b\\w+day\\b";
+
+        input = input.replaceAll(regexTime, "");
+        input = input.replaceAll(regexDayOfTheWeek, "");
+        input = input.replaceAll(",", "").trim();
+        input = input.replaceAll("[/ ]", "-");
+
+        return input;
     }
 }
