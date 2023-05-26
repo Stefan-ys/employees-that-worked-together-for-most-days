@@ -54,7 +54,7 @@ public class CSVServiceImpl implements CSVService {
                 int employeeId = Integer.parseInt(arr[0].trim());
                 int projectId = Integer.parseInt(arr[1].trim());
                 LocalDate dateStart = dateParser.parseDate(arr[2].trim());
-                LocalDate dateEnd = arr[3].equalsIgnoreCase("NULL") ? LocalDate.now() : dateParser.parseDate(arr[3]);
+                LocalDate dateEnd = arr[3].equalsIgnoreCase("NULL") ? LocalDate.now() : dateParser.parseDate(arr[3].trim());
 
                 Employee employee = new Employee(employeeId, dateStart, dateEnd);
 
