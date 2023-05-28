@@ -2,8 +2,6 @@ package com.example.employees.repositories;
 
 import com.example.employees.components.HashingEmployeePair;
 import com.example.employees.entities.Pair;
-
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +14,6 @@ public class EmployeesPairsRepository {
     public EmployeesPairsRepository() {
         this.employeesPairs = new HashMap<>();
         this.hashingEmployeePair = new HashingEmployeePair();
-
     }
 
     public void addEmployeesPair(Pair pair) {
@@ -37,8 +34,6 @@ public class EmployeesPairsRepository {
             return employeesPairs.get(keyValue);
         }
         return createNewPair(employeeOneId, employeeTwoId);
-
-
     }
 
     private Pair createNewPair(int employeeOneId, int employeeTwoId) {
@@ -46,6 +41,5 @@ public class EmployeesPairsRepository {
         addEmployeesPair(newPair);
         return newPair;
     }
-
 
 }
