@@ -72,7 +72,6 @@ public class CSVServiceImpl implements CSVService {
         List<Pair> result = new ArrayList<>();
         int mostDays = 0;
 
-
         // Iteration do the combinations of employees by pair in a project and collect them to employeesPairs repository.
         for (Integer projectId : employeesByProjectRepository.getProjectIds()) {
             List<Employee> employees = employeesByProjectRepository.getEmployeesByProjectId(projectId);
@@ -115,7 +114,6 @@ public class CSVServiceImpl implements CSVService {
         return dateOne.isBefore(dateTwo) ? dateOne : dateTwo;
     }
 
-
     private int checkDays(int days, int mostDays, List<Pair> pairs, Pair pair) {
         if (days < mostDays) {
             return mostDays;
@@ -126,4 +124,5 @@ public class CSVServiceImpl implements CSVService {
         pairs.add(pair);
         return days;
     }
+    
 }
