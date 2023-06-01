@@ -18,9 +18,7 @@ public class EmployeesPairsRepository {
 
     public void addEmployeesPair(Pair pair) {
         String keyValue = hashingEmployeePair.hashing(pair.getEmployeeOneId(), pair.getEmployeeTwoId());
-        if (!employeesPairs.containsKey(keyValue)) {
-            employeesPairs.put(keyValue, pair);
-        }
+        employeesPairs.putIfAbsent(keyValue, pair);
     }
 
     public Pair getEmployeesPair(int employeeOneId, int employeeTwoId) {
