@@ -17,17 +17,17 @@ public class EmployeesPairsRepository {
     }
 
     public void addEmployeesPair(Pair pair) {
-        String keyValue = hashingEmployeePair.hashing(pair.getEmployeeOneId(), pair.getEmployeeTwoId());
+        String keyValue = pair.getEmployeeOneId() + "@" + pair.getEmployeeTwoId();
         employeesPairs.putIfAbsent(keyValue, pair);
     }
 
     public Pair getEmployeesPair(int employeeOneId, int employeeTwoId) {
 
-        String keyValue = hashingEmployeePair.hashing(employeeOneId, employeeTwoId);
+         String keyValue = employeeOneId + "@" + employeeTwoId;
         if (employeesPairs.containsKey(keyValue)) {
             return employeesPairs.get(keyValue);
         }
-        keyValue = hashingEmployeePair.hashing(employeeTwoId, employeeOneId);
+        keyValue = employeeTwoId + "@" + employeeOneId;
         if (employeesPairs.containsKey(keyValue)) {
             return employeesPairs.get(keyValue);
         }
