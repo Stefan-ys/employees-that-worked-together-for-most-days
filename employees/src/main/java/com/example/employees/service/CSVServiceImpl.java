@@ -37,11 +37,11 @@ public class CSVServiceImpl implements CSVService {
         // Return pair(s) with that worked together for the most days
         return getPairThatWorkedTogetherMostDays();
     }
-
+    
     private void getProjectFromFile(MultipartFile file) {
 
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        int row = 1;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
 
@@ -59,10 +59,12 @@ public class CSVServiceImpl implements CSVService {
                 Employee employee = new Employee(employeeId, dateStart, dateEnd);
 
                 employeesByProjectRepository.addEmployeeToProject(projectId, employee);
-            }
 
+                row++;
+            }
+            
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error processing CSV file: " + e.getMessage());
+            throw new IllegalArgumentException("Error processing CSV file at row: " + row + " -> " + e.getMessage());
         }
     }
 
