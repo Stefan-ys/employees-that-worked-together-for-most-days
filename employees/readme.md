@@ -1,9 +1,9 @@
-Employees Assignment
+# Employees Assignment
 
 
 This project implements a functionality to find pairs of employees who have worked together on common projects for the longest period of time. It takes a CSV file as input, processes the data, and returns the result.
 
-* Technologies Used
+## Technologies Used
 * Java
 * Spring Boot
 * HTML
@@ -12,7 +12,7 @@ This project implements a functionality to find pairs of employees who have work
 * jQuery
 * Project Structure
 
-The project has the following structure:
+## The project has the following structure:
 
 * src/main/java: Contains the Java source code.
 	* com.example.employees.configuration: Contains the configuration classes.
@@ -22,13 +22,13 @@ The project has the following structure:
 * src/main/resources: Contains the application properties and static files.
 * src/test/java: Contains the unit test classes.
 
-Prerequisites
+## Prerequisites
 
 * Java 8 or higher
 * Maven
 * Internet connection (for downloading dependencies)
 
-Usage
+## Usage
 
 * Upload a CSV file containing the employee data.
 * The application will process the data and display the result.
