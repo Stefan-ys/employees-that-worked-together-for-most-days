@@ -10,7 +10,7 @@ This project implements a functionality to find pairs of employees who have work
 * CSS
 * JavaScript
 * jQuery
-* Project Structure
+
 
 ## The project has the following structure:
 
