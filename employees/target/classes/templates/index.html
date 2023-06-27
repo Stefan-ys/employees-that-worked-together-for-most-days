@@ -7,28 +7,38 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1><p>Pair of employees who have worked together</p>
-    <p>on common projects for the longest period of time</p></h1>
+<div class="container">
+    <h1>Pair of employees who have worked together on common projects for the longest period of time</h1>
 
-<input type="file" id="csvFile" accept=".csv" onchange="handleFile(event)">
-<br>
+            <label for="dateFormatSelect">Choose date format:</label>
+            <select id="dateFormatSelect">
+                <option value="DMY">DAY-MONTH-YEAR</option>
+                <option value="MDY">MONTH-DAY-YEAR</option>
+                <option value="YMD">YEAR-MONTH-DAY</option>
+                <option value="YDM">YEAR-DAY-MONTH</option>
+            </select>
 
-<h2>Result:</h2>
-<div id="resultText">
+            <br>
+            <br>
+
+            <input type="file" id="csvFile" accept=".csv" onchange="handleFile(event)">
+            <label for="csvFile" class="btn-choose-file">Choose File</label>
+
+            <h2>Result:</h2>
+            <div id="resultText"></div>
+
+            <table id="resultTable">
+                <thead>
+                <tr>
+                    <th class="header">Employee ID #1</th>
+                    <th class="header">Employee ID #2</th>
+                    <th class="header">Project ID</th>
+                    <th class="header">Days worked</th>
+                </tr>
+                </thead>
+                <tbody id="resultBody"></tbody>
+            </table>
 </div>
-
-
-<table id="resultTable">
-    <thead>
-    <tr>
-        <th class="header">Employee ID #1</th>
-        <th class="header">Employee ID #2</th>
-        <th class="header">Project ID</th>
-        <th class="header">Days worked</th>
-    </tr>
-    </thead>
-    <tbody id="resultBody"></tbody>
-</table>
 
 
 <script>
@@ -37,6 +47,9 @@
 
         let formData = new FormData();
         formData.append("file", file);
+
+        let dateFormat = document.getElementById("dateFormatSelect").value;
+        formData.append("dateFormat", dateFormat);
 
         fetch("/process-csv", {
             method: "POST",

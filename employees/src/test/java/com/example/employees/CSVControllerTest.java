@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +36,14 @@ public class CSVControllerTest {
     @Test
     public void testProcessSCVValid() {
         List<Pair> expectedResult = new ArrayList<>();
-        when(csvService.processCSV(any(MultipartFile.class))).thenReturn(expectedResult);
+        when(csvService.processCSV(any(MultipartFile.class), any(String.class))).thenReturn(expectedResult);
 
         MultipartFile file = new MockMultipartFile("test.csv", new byte[0]);
 
-        ResponseEntity<List<Pair>> response = csvController.processCSV(file);
+        String dateFormat = "YMD";
+        ResponseEntity<List<Pair>> response = csvController.processCSV(file, dateFormat);
 
-        verify(csvService, times(1)).processCSV(any(MultipartFile.class));
+        verify(csvService, times(1)).processCSV(any(MultipartFile.class), any(String.class));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResult, response.getBody());
@@ -49,14 +51,16 @@ public class CSVControllerTest {
 
     @Test
     public void testProcessCSVInvalid() {
-        when(csvService.processCSV(any(MultipartFile.class))).thenThrow(new RuntimeException("Error"));
+        when(csvService.processCSV(any(MultipartFile.class), any(String.class))).thenThrow(new RuntimeException("Error"));
 
         MultipartFile file = new MockMultipartFile("test.csv", new byte[0]);
+        String dateFormat = "YMD";
 
-        ResponseEntity<List<Pair>> response = csvController.processCSV(file);
+        ResponseEntity<List<Pair>> response = csvController.processCSV(file, dateFormat);
 
-        verify(csvService, times(1)).processCSV(any(MultipartFile.class));
+        verify(csvService, times(1)).processCSV(any(MultipartFile.class), any(String.class));
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
 }

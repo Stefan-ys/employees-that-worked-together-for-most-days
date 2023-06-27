@@ -6,5 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface CSVService {
-    List<Pair> processCSV(MultipartFile file);
+
+    List<Pair> processCSV(MultipartFile file, String dateFormat);
 }

@@ -20,9 +20,10 @@ public class CSVController {
     }
 
     @PostMapping("/process-csv")
-    public ResponseEntity<List<Pair>> processCSV(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<List<Pair>> processCSV(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("dateFormat") String dateFormat) {
         try {
-            List<Pair> result = csvService.processCSV(file);
+            List<Pair> result = csvService.processCSV(file,dateFormat);
 
             return ResponseEntity.ok(result);
 

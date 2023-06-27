@@ -28,8 +28,9 @@ public class CSVServiceTest {
                 145, 12, 2014-02-05, 2014-02-15""";
 
         MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
+        String dateFormat = "YMD";
 
-        List<Pair> result = csvService.processCSV(file);
+        List<Pair> result = csvService.processCSV(file, dateFormat);
 
         Assertions.assertEquals(1, result.size());
 
@@ -66,7 +67,8 @@ public class CSVServiceTest {
                 5,5,2018-8-4,NULL""";
 
         MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
-        List<Pair> result = csvService.processCSV(file);
+        String dateFormat = "YMD";
+        List<Pair> result = csvService.processCSV(file, dateFormat);
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals(4, result.get(0).getProjects().size());
@@ -91,15 +93,15 @@ public class CSVServiceTest {
                 140, 16, 2013-11-01, 2015-02-20
                 146, 16, 2015-02-05, 2015-02-15
                 147, 17, 2013-11-01, 2015-01-31
-                148, 17, 01/01/2015, 31/01/2015
+                148, 17, 2015/01/01, 2015/01/31
                 150, 1, 2013-01-01, null  
                 148, 21, 2015-01-01, 2015-01-31
                 148, 21, 2015-01-01, 2015-01-31                           
                 """;
 
         MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
-
-        List<Pair> result = csvService.processCSV(file);
+        String dateFormat = "YMD";
+        List<Pair> result = csvService.processCSV(file, dateFormat);
 
         Pair expectedPair1 = new Pair(147, 148, 30);
         expectedPair1.getProjects().put(17, 30);
@@ -137,7 +139,7 @@ public class CSVServiceTest {
                 145, 12, 2014-02-05, 2014-02-15""";
 
         MockMultipartFile file = new MockMultipartFile("file.csv", csvContent.getBytes());
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> csvService.processCSV(file));
+        String dateFormat = "YMD";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> csvService.processCSV(file, dateFormat));
     }
 }

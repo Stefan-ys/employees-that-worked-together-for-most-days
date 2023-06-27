@@ -17,7 +17,7 @@ import java.util.*;
 
 @Service
 public class CSVServiceImpl implements CSVService {
-    
+
     private final DateParser dateParser;
     private final EmployeesByProjectRepository employeesByProjectRepository;
     private final EmployeesPairsRepository employeesPairsRepository;
@@ -31,14 +31,14 @@ public class CSVServiceImpl implements CSVService {
 
 
     @Override
-    public List<Pair> processCSV(MultipartFile file) {
+    public List<Pair> processCSV(MultipartFile file, String dateFormat) {
         // Read data from file and add employees in project repository
-        getProjectFromFile(file);
+        getProjectFromFile(file, dateFormat);
         // Return pair(s) with that worked together for the most days
         return getPairThatWorkedTogetherMostDays();
     }
-    
-    private void getProjectFromFile(MultipartFile file) {
+
+    private void getProjectFromFile(MultipartFile file, String dateFormat) {
 
         int row = 1;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -53,8 +53,8 @@ public class CSVServiceImpl implements CSVService {
 
                 int employeeId = Integer.parseInt(arr[0].trim());
                 int projectId = Integer.parseInt(arr[1].trim());
-                LocalDate dateStart = dateParser.parseDate(arr[2].trim());
-                LocalDate dateEnd = arr[3].equalsIgnoreCase("NULL") ? LocalDate.now() : dateParser.parseDate(arr[3].trim());
+                LocalDate dateStart = dateParser.parseDate(arr[2].trim(), dateFormat);
+                LocalDate dateEnd = arr[3].equalsIgnoreCase("NULL") ? LocalDate.now() : dateParser.parseDate(arr[3].trim(), dateFormat);
 
                 Employee employee = new Employee(employeeId, dateStart, dateEnd);
 
@@ -62,7 +62,7 @@ public class CSVServiceImpl implements CSVService {
 
                 row++;
             }
-            
+
         } catch (Exception e) {
             throw new IllegalArgumentException("Error processing CSV file at row: " + row + " -> " + e.getMessage());
         }
@@ -126,5 +126,5 @@ public class CSVServiceImpl implements CSVService {
         pairs.add(pair);
         return days;
     }
-    
+
 }

@@ -1,6 +1,5 @@
 package com.example.employees.repositories;
 
-import com.example.employees.components.HashingEmployeePair;
 import com.example.employees.entities.Pair;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +8,9 @@ import java.util.Map;
 public class EmployeesPairsRepository {
 
     private final Map<String, Pair> employeesPairs;
-    private final HashingEmployeePair hashingEmployeePair;
 
     public EmployeesPairsRepository() {
-        this.employeesPairs = new HashMap<>();
-        this.hashingEmployeePair = new HashingEmployeePair();
-    }
+        this.employeesPairs = new HashMap<>();}
 
     public void addEmployeesPair(Pair pair) {
         String keyValue = pair.getEmployeeOneId() + "@" + pair.getEmployeeTwoId();
